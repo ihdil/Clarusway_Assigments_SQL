@@ -1,0 +1,45 @@
+-- Assign 1 
+create table Employees ( id int, name varchar(20), surname varchar(20), address varchar(50), age int, salary int ); 
+
+insert into Employees values(101,'Ty','Burrell','Oregon',56, 10000); 
+insert into Employees values(102,'Julie','Bowen','Maryland',53, 15000); 
+insert into Employees values(103,'Sarah','Hyland','Newyork',33, 11000); 
+insert into Employees values(104,'Eric','Stonestreet','Kansas',52, 17000); 
+insert into Employees values(105,'Ed','O'Neill','Ohio',77, 17000); 
+insert into Employees values(106,'Jesse','Tyler','Montana',48, 18000); 
+insert into Employees values(107,'Ariel','Winter','Virginia',42, 19000); 
+insert into Employees values(108,'Aisha','Tyler','California',53, 21000); 
+insert into Employees values(109,'Jeremy','Maguire','Mexico',12, 17000); 
+insert into Employees values(110,'Aubrey','Anderson','California',16, 80000); 
+insert into Employees values(111,'Rico','Rodriguez','Texas',25, 40000); 
+select * from Employees ; 
+
+-- Task 01: Create a query that lists the details of employees with a salary greater than 7000.
+select * from employees where salary>7000;
+-- Task 02: Create a query that lists the details of employees with a salary less than 17000.
+select * from employees where salary<17000;
+-- Task 03: Create a query that lists the details of employees surnamed Tyler.
+select * from employees where surname='Tyler';
+-- Task 04: Create a query that lists the details of employees whose address ends with 'nia'.
+select * from employees where address LIKE '%nia';
+-- Task 05: Create a query that lists employees whose name starts with the letter 'A'.
+select * from employees where name LIKE 'A%';
+-- Task 06: Create a query that lists employees whose second letter of the name is 'e' and have a salary over 18000.
+select * from employees where name LIKE '_e%' and salary>1800;
+-- Task 07: Create a query that lists employees whose sixth letter of the name is 'y' and have 'e' in other parts of their name.
+select * from employees where name LIKE '_____y%' and surname like '%e%';
+-- Task 08: Create a query that lists employees whose names do not contain the letter 'a'.
+select * from employees where name not like '%a%';
+-- Task 09: Create a query that lists employees whose first letter of the name is 'e' and the fourth letter is 'c'.
+select * from employees where name like 'e%' and  name like '___c%';
+-- Task 10: Create a query that lists employees whose surname starts with 'B'.
+select * from employees where surname like 'B%';
+-- Task 11: Create a query that lists employees who live in Montana.
+select * from employees where address= 'Montana';
+-- Task 12: Create a query that lists employees who are over the age of 30.
+select * from employees where age > 30;
+-- Task 13: Create a query that lists employees who are over the age of 40 and have a salary less than 18000.
+select * from employees where age > 40 and salary < 18000; 
+-- Task 14: Create a query that lists the details of employees with a salary between 16000 and 22000.
+select * from employees where salary between 16000 and 22000;
+
