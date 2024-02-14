@@ -1,0 +1,44 @@
+--Ass 2
+create database work;
+use work;
+
+-- exists not exists null not null
+
+CREATE TABLE students (
+    student_id INT PRIMARY KEY,
+    firstname VARCHAR(50),
+    department VARCHAR(50),
+    grade_avg DECIMAL(3, 2)
+);
+INSERT INTO students (student_id , firstname, department, grade_avg)
+VALUES
+    (1, 'Melad', 'Computer Engineering', 4.00),
+    (2, 'Leen', 'Electrical Engineering', 3.90),
+    (3, 'Suleyman', 'civil engineering', NULL),
+    (4, 'Leon', 'chemical engineering', 3.25),
+    (5, 'Taef', 'mechanical engineering', 3.60),
+    (6, 'Muneera', 'industrial engineering', 3.80),
+    (7, 'Areej', 'Computer Engineering', 3.95),
+    (8, 'Emtnan', 'civil engineering', 3.45),
+    (9, 'Eren', 'Electrical Engineering', 3.70),
+    (10, 'Deniz', 'chemical engineering', NULL);
+    
+    
+-- Task 1 : Create a query that checks if there is a student whose name is 'Emtnan' in the student table.
+    select * from students where firstname = 'Emtnan';
+-- Task 2 : Create a query that checks if there is a student whose department is 'Computer Engineering'.
+select * from students where department = 'Computer Engineering';
+-- Task 3 : Create a query that lists the students whose grade point average is null.
+select * from students where grade_avg IS null ;
+-- Task 4 : Create a query that lists the students whose GPA is not null.
+select * from students where NOT grade_avg IS null ;
+-- Task 5 : Check if there is a student named 'Eren' who is studying in 'Electrical Engineering' department.
+select * from students where firstname = 'Eren' and department = 'Electrical Engineering';
+-- Task 6 : Check if a student named 'Areej' exists and if his/her GPA is not null.
+select * from students where firstname = 'areej' and grade_avg is not null;
+-- Task 7 : Check if there is a student studying in the 'Mechanical Engineering' department.
+select * from studentts where department = 'Mechanical Engineering';
+-- Task 8 : List students with unknown (NULL) GPA.
+select * from studentts where grade_avg is null;
+
+
