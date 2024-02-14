@@ -1,0 +1,41 @@
+create database work;
+use work;
+
+-- alter table
+
+CREATE TABLE students (
+   studentID INT PRIMARY KEY,
+    firstname VARCHAR(50),
+    lastname VARCHAR(50),
+   birthdate DATE,
+    departmentID INT
+);
+-- Task 1: Add a new gender column
+ALTER TABLE students Add gender varchar(50);
+-- Task 2: Change last name column to 100 characters
+ALTER TABLE students MODIFY COLUMN lastname VARCHAR(100);
+-- Task 3: Delete birthDate column
+ALTER TABLE students drop column birthDate ;
+-- Task 4: Add a PRIMARY KEY (StudentID) 
+ALTER TABLE students ADD PRIMARY KEY (StudentID);
+-- Task 5: Add a UNIQUE CONSTRAINT.(firstname , lastname)
+ALTER TABLE students ADD CONSTRAINT name_combination UNIQUE (firstname, lastname);  
+
+CREATE TABLE departments (
+   departmentID INT PRIMARY KEY,
+   department_name VARCHAR(50)
+);
+
+-- Task 6:  Add a FOREIGN KEY named "departmentID" to the "Students" table
+ALTER TABLE students
+ADD COLUMN departmentID INT;
+-- Add a FOREIGN KEY constraint to the departmentID column
+ALTER TABLE students
+ADD CONSTRAINT fk_department
+FOREIGN KEY (departmentID)
+REFERENCES departments(departmentID);
+-- Task 7: Assign DEFAULT value ('B' for Gender)
+ALTER table students ALTER COLUMN gender SET DEFAULT 'B';
+-- Task 8: Add CHECK constraint (Date of Birth < '2005-01-01')
+ALTER TABLE students ADD CONSTRAINT chk_birthdate CHECK ( birthdate < '2005-01-01');
+-- Let's examine the table again
