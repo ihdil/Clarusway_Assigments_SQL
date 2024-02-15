@@ -1,0 +1,60 @@
+create database work;
+
+
+-- regexp 
+create table newEmployees 
+(
+id int,
+firstname varchar(20),
+lastname varchar(20),
+address varchar(50),
+age int,
+salary int
+);
+
+ insert into newEmployees values(101,'Melad','Alamri','Makkah',30, 30000);
+ insert into newEmployees values(102,'Leen','Alsultan','Riyadh',32, 25000);
+ insert into newEmployees values(103,'Areej','Alzaidi','Khafji',31, 21000);
+ insert into newEmployees values(104,'Muneera','AlAli','Madinah',33, 17000);
+ insert into newEmployees values(105,'Nouf','Alsubhi','Unayzah',32, 17000);
+ insert into newEmployees values(106,'Sulaiman','Alzahrani','Jazan',33, 18000);
+ insert into newEmployees values(107,'Shatha','Alharbi','Abha',31, 19000);
+ insert into newEmployees values(108,'Emtnan','Bloush','Najran',32, 21000);
+ insert into newEmployees values(109,'Rand','AlMuhanna','Tabuk',33, 17000);
+ insert into newEmployees values(110,'Manar','Alabdail','Sakakah',34, 80000);
+ insert into newEmployees values(111,'Taef','Mersal','Makkah',34, 40000);
+ insert into newEmployees values(110,'Najd','Aleid','Riyadh',33, 80000);
+ insert into newEmployees values(110,'Halima','AlAqili','Jizan',31, 80000);
+ insert into newEmployees values(110,'Bishri','Alharbi','Buraydah',32, 80000);
+ insert into newEmployees values(110,'Raheil','Alotaibi','Al Bahah',33, 80000);
+ insert into newEmployees values(110,'Lujain','Alqahtani','Madinah',32, 80000);
+
+ select * from newEmployees ;
+ 
+
+-- Task01 -> Create a query that lists the newEmployees with 'ma' or 'ri' in the firstname, paying attention to the lower case.
+select * from newEmployees where REGEXP_LIKE (firstname,'ma|ri');
+-- Task02 -> Create a query that lists newEmployees with 'ma' or 'ri' in their names, case insensitive.
+select * from newEmployees where REGEXP_LIKE (firstname,'ma|ri','i') or REGEXP_LIKE (lastname,'ma|ri','i');
+-- Task03 -> Create a query that lists newEmployees with names starting with 'ha' or 'la', case-insensitive.
+select * from newEmployees where REGEXP_LIKE (firstname,'^ha|^la','i') or REGEXP_LIKE (lastname,'^ha|^la','i');
+-- Task04 -> Create a query that lists newEmployees whose surname ends with 'l' or 'd' regardless of case.
+select * from newEmployees where REGEXP_LIKE (lastname, 'l$|d$');
+-- Task05 -> Create a query that lists newEmployees with 5 character names starting with m and ending with r (m and r with lower case letters).
+select * from newEmployees WHERE REGEXP_LIKE (firstname, '^m...r$') OR REGEXP_LIKE (lastname, '^m...r$') ;
+-- Task06 -> Create a query that lists newEmployees with 6 character surnames starting with B and ending with h.
+select * from newEmployees where REGEXP_LIKE (lastname , '^B....h$');
+-- Task07 -> Create a query that lists all the information of newEmployees with 5 letter names with first letter m, last letter d or r and 2nd letter a or e.
+select * from newEmployees where REGEXP_LIKE (firstname ,'^ma..d$|^ma..r$|^me..d$|^me..r$');
+-- Task08 -> Create a query that lists all the information of newEmployees with names with m or n or t in the name.
+select * from newEmployees where REGEXP_LIKE (firstname, 'm|n|t') or REGEXP_LIKE (lastname, 'm|n|t');
+-- Task09 -> Create a query that lists all the information of newEmployees whose address starts with a or m.
+select * from newEmployees where REGEXP_LIKE (address , '^a|^m');
+-- Task10 -> Create a query that lists all the information of newEmployees whose address contains at least 2 'a' bars.
+select * from newEmployees where REGEXP_LIKE(address, 'a.*a.*');
+-- Task11 -> Create a query that lists all the information of the newEmployees whose salary contains at least 4 0000 bars.
+select * from newEmployees where REGEXP_LIKE(salary, '[0]{4,}');
+-- Task12 -> Create a query that lists newEmployees with 5 letter names with the first letter h or n, 2nd letter a, and 5 letter names, paying attention to lower case.
+select * from newEmployees where REGEXP_LIKE (firstname , '^ha...|^na...');
+-- Task13 -> Create a query that lists all the information of newEmployees with u or i or e in their city.
+select * from newEmployees where REGEXP_LIKE (address , 'u|i|e');`
