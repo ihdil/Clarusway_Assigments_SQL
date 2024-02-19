@@ -1,0 +1,66 @@
+create database work;
+use work;
+
+-- group by , having
+
+create table product_group (
+g_code 	  char(7) primary key not null,
+g_name 	  varchar(45),
+p_manager varchar(45) default '' );
+
+create table products (
+p_code varchar(20) unique not null,
+p_name varchar(45),
+g_code char(7) ,
+g_colour varchar(10),
+price int,
+CONSTRAINT group_fk FOREIGN KEY (g_code) REFERENCES product_group(g_code) );
+
+insert into product_group (g_code,g_name) values 
+('DT','DeskTop'),('LT','LapTop'),('MP','MobilePhone'),('PR','Printer');  
+
+insert into products(p_code,p_name,g_code,price) values 
+('AS01', 'Asus 14" Notebook', 	'LT',450),('AS15', 'Asus 15" Notebook', 	'LT',650),
+('D151', 'Dell 15" Notebook',  	'LT',550),('DT01','Asus Desktop Computer',	'DT',480),
+('AP70', 'Asus Mobile phone ',  'MP',300),('DT02','Asus Desktop Computer',	'DT',460),
+('AP20', 'Asus MMobile Phone',	'MP',290),('DT03','HP Desktop Computer',	'DT',440),
+('HP05', 'HP 17" Notebook',    	'LT',600),('DT04','Dell Desktop Computer',	'DT',390),
+('AS05', 'Asus 15" Notebook',  	'LT',570),('DT05','Dell Desktop Computer',	'DT',395),
+('BL13', 'Brother Lazer Printr','PR',120),('DT06','Zenon Desktop Computer',	'DT',475),
+('IJ10', 'HP InkJet Printer',  	'PR', 70),('DT07','Dell Desktop Computer',	'DT',495),
+('LZ30', 'HP Lazer Printer',   	'PR', 99),('DT08','HP Desktop Computer',	'DT',500);
+
+-- Question 1) Please create a query that lists how many products are more expensive than 400 in each product group.
+SELECT g.g_name AS product_group, COUNT(*) AS expensive_products FROM products p JOIN product_group g ON p.g_code = g.g_code WHERE price > 400 GROUP BY g.g_name;
+-- Question 2) Please create a query that lists how many products there are in product groups with more than 400 products.
+SELECT g.g_name, COUNT(*) AS product_count FROM products p INNER JOIN product_group g ON p.g_code = g.g_code GROUP BY g.g_name HAVING COUNT(*) > 400;
+-- Question 3) Create a query that lists the cheapest products of product groups with more than 3 products.
+SELECT p.g_code, p.p_name, p.price FROM products p JOIN (SELECT g_code, MIN(price) AS min_price FROM products GROUP BY g_code HAVING COUNT(*) > 3) AS grouped_products ON p.g_code = grouped_products.g_code AND p.price = grouped_products.min_price;
+-- question 3a) List the most expensive product of each product group.
+SELECT pg.g_code, pg.g_name, p.p_code, p.p_name, p.price FROM product_group pg JOIN products p ON pg.g_code = p.g_code WHERE p.price = (SELECT MAX(price) FROM products WHERE g_code = pg.g_code);
+-- question 3b) In question 3a, please create a query that lists the total price in the group more than 1000.
+SELECT pg.g_code, pg.g_name, SUM(p.price) AS total_price FROM product_group pg JOIN products p ON pg.g_code = p.g_code GROUP BY pg.g_code, pg.g_name HAVING total_price > 1000;
+-- Question 4) Create a query that lists products with a price less than 100 and greater than 500.
+SELECT * FROM products WHERE price BETWEEN 100 AND 500;
+-- Question 6) List all products in the products table, price more than 500.
+-- please create query that lists the big ones 2 times...
+SELECT * FROM products WHERE price > 500 LIMIT 2; 
+-- Question 7) Product groups with the cheapest price greater than 100 (g_code+min price) 
+SELECT g_code, MIN(price) AS min_price FROM products GROUP BY g_code HAVING MIN(price) > 100
+UNION ALL
+SELECT g_code, 0 AS min_price FROM product_group WHERE g_code NOT IN (SELECT g_code FROM products);
+-- question 7a) Let's do question 7 without using union.alter
+SELECT g.g_code, MIN(p.price) AS min_price FROM product_group g
+LEFT JOIN products p ON g.g_code = p.g_code
+GROUP BY g.g_code HAVING MIN(p.price) > 100 OR NOT EXISTS (SELECT 1 FROM products WHERE g_code = g.g_code AND price <= 100);
+
+-- Question 8) Please create query that lists the product list with g_name./ Let's solve it with 3 methods
+-- Using JOIN Method 1
+SELECT p.p_code, p.p_name, pg.g_name FROM products p JOIN product_group pg ON p.g_code = pg.g_code;
+-- Using Subquery Method 2
+SELECT p_code, p_name, (SELECT g_name FROM product_group where g_code = p.g_code) AS g_name
+FROM products;
+-- Using CASE WHEN Method 3
+SELECT p_code, p_name,
+CASE WHEN g_code IN (SELECT g_code FROM product_group) THEN (SELECT g_name FROM product_group WHERE g_code = p.g_code) ELSE 'Unknown' END AS g_name
+FROM products;
