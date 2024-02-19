@@ -1,0 +1,146 @@
+create database work;
+use work;
+
+-- DISTINCT , JOIN , UNION
+
+
+CREATE TABLE students (
+    id INT PRIMARY KEY,
+    name VARCHAR(50),
+    grade INT
+);
+
+
+CREATE TABLE courses (
+    id INT PRIMARY KEY,
+    course VARCHAR(50)
+);
+
+
+INSERT INTO students (id, name, grade) VALUES
+(1, 'Alice', 90),
+(2, 'Bob', 85),
+(3, 'Charlie', 95),
+(4, 'David', 80),
+(5, 'Emily', 90),
+(6, 'Frank', 88),
+(7, 'Grace', 92),
+(8, 'Henry', 78),
+(9, 'Ivy', 91),
+(10, 'Jack', 85),
+(11, 'Katherine', 89),
+(12, 'Liam', 93),
+(13, 'Mia', 87),
+(14, 'Noah', 94),
+(15, 'Olivia', 88),
+(16, 'Parker', 82),
+(17, 'Quinn', 90),
+(18, 'Ryan', 91),
+(19, 'Sophia', 85),
+(20, 'Tyler', 79),
+(21, 'Aiden', 84),
+(22, 'Bella', 93),
+(23, 'Caleb', 87),
+(24, 'Daisy', 94),
+(25, 'Elijah', 88),
+create database work;
+use work;
+
+-- DISTINCT , JOIN , UNION
+drop table students;
+drop table courses;
+
+CREATE TABLE students (
+    id INT PRIMARY KEY,
+    name VARCHAR(50),
+    grade INT
+);
+
+
+CREATE TABLE courses (
+    id INT PRIMARY KEY,
+    course VARCHAR(50)
+);
+
+
+INSERT INTO students (id, name, grade) VALUES
+(1, 'Alice', 90),
+(2, 'Bob', 85),
+(3, 'Charlie', 95),
+(4, 'David', 80),
+(5, 'Emily', 90),
+(6, 'Frank', 88),
+(7, 'Grace', 92),
+(8, 'Henry', 78),
+(9, 'Ivy', 91),
+(10, 'Jack', 85),
+(11, 'Katherine', 89),
+(12, 'Liam', 93),
+(13, 'Mia', 87),
+(14, 'Noah', 94),
+(15, 'Olivia', 88),
+(16, 'Parker', 82),
+(17, 'Quinn', 90),
+(18, 'Ryan', 91),
+(19, 'Sophia', 85),
+(20, 'Tyler', 79),
+(21, 'Aiden', 84),
+(22, 'Bella', 93),
+(23, 'Caleb', 87),
+(24, 'Daisy', 94),
+(25, 'Elijah', 88),
+(26, 'Fiona', 82),
+(27, 'Gavin', 90),
+(28, 'Hazel', 91),
+(29, 'Isaac', 85),
+(30, 'Jasmine', 79);
+
+
+
+INSERT INTO courses (id, course) VALUES
+(1, 'Math'),
+(2, 'Physics'),
+(3, 'Chemistry'),
+(4, 'History'),
+(5, 'Computer Science'),
+(6, 'Biology'),
+(7, 'Art'),
+(8, 'Economics'),
+(9, 'Geography'),
+(10, 'Music'),
+(11, 'Philosophy'),
+(12, 'Political Science'),
+(13, 'Psychology'),
+(14, 'Sociology'),
+(15, 'Statistics'),
+(16, 'Theater'),
+(17, 'Chemical Engineering'),
+(18, 'Environmental Science'),
+(19, 'Foreign Languages'),
+(20, 'History of Art'),
+(21, 'Information Technology'),
+(22, 'Linguistics'),
+(23, 'Marketing'),
+(24, 'Nutrition'),
+(25, 'Oceanography'),
+(26, 'Quantum Physics');
+
+
+-- Task 1 : List the unique grade values in the student table.
+select DISTINCT grade from students;
+-- Task 2 : Create a list of students names and the courses they have taken.
+select s.name, c.course from students s join courses c on s.id=c.id ;
+-- Task 3 : List the names of the students who took Chemistry and the students who took English in alphabetical order.
+SELECT s.name FROM students s WHERE s.id IN ( SELECT s.id FROM students s JOIN courses c ON s.id = c.id WHERE course = 'Chemistry' OR course = 'English') ORDER BY name;
+-- Task 4 : List the names of the students and the courses they have taken in the two tables. However, if the same student takes more than one course, show only one row for each student.
+SELECT s.name AS student_name, c.course AS course_name FROM students s JOIN courses c ON s.id = c.id;
+-- Task 5 : List in alphabetical order the names of the students taking the math course and the names of the students taking the English course. However, each student should be shown only once.
+SELECT DISTINCT s.name FROM students s JOIN courses c ON s.id = c.id WHERE c.course IN ('Math', 'English') ORDER BY s.name;
+-- Task 6 : List the names and grades of the students who took Chemistry and got a grade higher than 90.
+select s.name ,s.grade from students s JOIN courses c ON s.id = c.id WHERE c.course IN ('Chemistry') and s.grade>90;
+-- Task 7 : List the names and grades of the students who took Physics and got a grade lower than 80.
+select s.name ,s.grade from students s JOIN courses c ON s.id = c.id WHERE c.course IN ('Physics') and s.grade>80;
+-- Task 8 : List the names of the students who took History and Computer Science in alphabetical order.
+select s.name ,s.grade from students s JOIN courses c ON s.id = c.id WHERE c.course IN ('History','Computer Science') order by name ASC;
+-- Task 9 : List the average and highest grade for each course.
+SELECT c.course, AVG(s.grade) AS average_grade, MAX(s.grade) AS highest_grade FROM courses c JOIN students s ON c.id = s.id GROUP BY c.course;
