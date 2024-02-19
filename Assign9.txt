@@ -1,0 +1,62 @@
+create database work;
+use work;
+
+-- order by , subquery
+
+CREATE TABLE workers
+(
+id CHAR(4),
+firstname VARCHAR(50),
+salary int(5),
+CONSTRAINT id_pk PRIMARY KEY (id)
+);
+
+INSERT INTO workers VALUES('1001', 'Maria Rossi', 7000); 
+INSERT INTO workers VALUES('1002', 'Pierre Dubois', 12000);
+INSERT INTO workers VALUES('1003', 'Mirjana Kovacic', 7215);
+INSERT INTO workers VALUES('1004', 'Abdulqadir Turdi', 5000);
+
+CREATE TABLE families
+(
+id CHAR(4),
+count_children VARCHAR(50),
+additional_income int(5),
+CONSTRAINT id_fk FOREIGN KEY (id) REFERENCES workers(id)
+);
+
+INSERT INTO families VALUES('1001', 4, 2000);
+INSERT INTO families VALUES('1002', 2, 1500); 
+INSERT INTO families VALUES('1003', 1, 2200);
+INSERT INTO families VALUES('1004', 3, 2400);
+
+select * from workers;
+select * from families;
+
+SET SQL_SAFE_UPDATES = 0;
+
+-- Task01 -> Raise Pierre Dubois's salary by 20%.
+UPDATE workers
+SET salary = salary * 1.2 
+WHERE firstname IN (select firstname where firstname='Pierre Dubois');
+-- Task02 -> Give a 20% raise to those whose salary is below average.
+UPDATE workers
+SET salary = salary * 1.2
+WHERE salary < (SELECT AVG(salary) FROM workers);
+-- Task03 -> Write the query that lists the name and child_number of workers.
+-- *using subquery and order by*    
+SELECT firstname, (SELECT count_children FROM families WHERE id = w.id) AS count_children FROM workers w order by w.firstname;  
+-- Task04 -> Write a query that lists the name and total_income of workers. 
+-- total_income = workers.salary + families.additional_income 
+SELECT firstname, (f.additional_income + w.salary) AS total_income FROM workers w JOIN families f ON w.id = f.id order by w.firstname;  
+-- Task05 -> if the per income of a family is less than 2000, give an additional 10% family allowance increase to that employee's salary. 
+-- person_per_income = total_income / (number of children + 2) (mother and father)
+UPDATE workers w
+SET salary = salary * 1.1
+WHERE EXISTS (
+  SELECT 1
+  FROM families f
+  WHERE f.id = w.id
+  AND (f.additional_income + w.salary) / (f.count_children + 2) < 2000
+);
+-- Display the updated workers table
+SELECT * FROM workers;
