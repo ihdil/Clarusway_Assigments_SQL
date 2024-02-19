@@ -1,0 +1,49 @@
+create database work;
+use work;
+
+-- foreign key
+
+CREATE TABLE employees (
+    employee_id INT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    department_id INT,
+    FOREIGN KEY (department_id) REFERENCES departments(department_id)
+);
+
+INSERT INTO employees (employee_id, first_name, last_name, department_id) VALUES
+(108, 'Yuki', 'Tanaka', 1),
+(109, 'Sophia', 'Lopez', 2),
+(110, 'Liam', 'Connor', 1),
+(111, 'Khalid', 'Al-Mutairi', 3),
+(112, 'Elena', 'Kovalev', 2),
+(113, 'Chang', 'Lee', 4),
+(114, 'Isabella', 'Silva', 3);
+
+CREATE TABLE departments (
+    department_id INT PRIMARY KEY,
+    department_name VARCHAR(50) NOT NULL
+);
+
+
+INSERT INTO departments (department_id, department_name) VALUES
+(1, 'Information Technology'),
+(2, 'Human Resources'),
+(3, 'Marketing'),
+(4, 'Finance');
+
+
+-- Task 1. List Employees: Write a query that lists the first and last name of all employees.
+select first_name , last_name from employees;
+-- Task 2. List Employees in a Specific Department: Write a query that lists all employees belonging to a department.
+SELECT e.first_name, e.last_name FROM employees e JOIN departments d ON e.department_id = d.department_id WHERE d.department_name = 'Finance';
+-- Task 3. List Employees and Their Related Departments: Write a query that lists the first name, last name and the name of the department each employee works in.
+SELECT e.first_name, e.last_name, d.department_name FROM employees e JOIN departments d ON e.department_id = d.department_id;
+-- Task 4. Retrieve Information for a Specific Employee: Write a query that retrieves the first name, last name and the name of the department where a specific employee works.
+SELECT e.first_name, e.last_name, d.department_name FROM employees e JOIN departments d ON e.department_id = d.department_id WHERE employee_id = 108;
+-- Task 5. List all employees with their department information.
+SELECT e.first_name, e.last_name, d.department_name FROM employees e JOIN departments d ON e.department_id = d.department_id;
+-- Task 6. Find the total number of employees in each department.
+SELECT count(*) AS total_employees ,d.department_name from employees e join departments d on e.department_id = d.department_id group by d.department_name;
+-- Task 7. Show the names of employees who work in the 'Information Technology' department.
+SELECT first_name ,d.department_name from employees e JOIN departments d on e.department_id = d.department_id where d.department_name= 'Information Technology';
